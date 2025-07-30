@@ -3,9 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
+using Unity.VisualScripting;
 
 public class ButtonManager : MonoBehaviour
 {
+
     [SerializeField] private float m_Speed = 5f;
     [SerializeField] private Transform m_Player;
     [SerializeField] private Animator m_Animator;
@@ -18,8 +20,15 @@ public class ButtonManager : MonoBehaviour
     [SerializeField] private float m_WaveTopHeight = 0.4f;
     [SerializeField] private float m_WaveBottomHeight = 0f;
 
+    [Header("UI")]
+    [SerializeField] private PointToClick m_PointToClickPrefab;
+
+    [Header("Particles")]
+    [SerializeField] private ParticleSystem m_ClickParticleSystemPrefab;
+
     private Vector3? m_Destination;
     private Vector3 m_StartPos;
+    private Vector2 m_ClickPosition;
     private float m_Timer;
     private float m_CurrentWaveHeight = 0.0f;
     private float m_TargetWaveHeight = 0.0f;
@@ -29,6 +38,7 @@ public class ButtonManager : MonoBehaviour
     private bool m_IsHoldLoopActive = false;
     private bool m_ReadyToStopLoop = false;
     private bool m_CanPress = true;
+
 
     private Coroutine m_HoldAttackLoopCoroutine = null;
 
@@ -85,8 +95,25 @@ public class ButtonManager : MonoBehaviour
         return false;
     }
 
+    void DisplayClickEffect(Vector2 screenPoint)
+    {
+        Vector3 worldPos =
+        Camera.main.ScreenToWorldPoint(new Vector3(
+        screenPoint.x,
+        screenPoint.y,
+        Camera.main.nearClipPlane));
+        worldPos.z = 0; // Optional: Set Z to 0 if you're working in 2D
+        Instantiate(m_PointToClickPrefab, worldPos, Quaternion.identity);
+        ParticleSystem particleEffect = Instantiate(m_ClickParticleSystemPrefab, worldPos, Quaternion.identity);
+        particleEffect.Play();
+
+        StartCoroutine(DestroyParticleSystemAfterEffect(particleEffect));
+    }
+
     public void OnButtonPress()
     {
+
+
         if (!m_CanPress) return;
 
         bool isPointerOverButton = Input.GetMouseButton(0) && IsPointerOverUIObject(m_BattleButton.gameObject);
@@ -95,6 +122,9 @@ public class ButtonManager : MonoBehaviour
         {
             Debug.Log("[Input] Mouse Down → Set Wave Height Target = 1");
             m_TargetWaveHeight = m_WaveTopHeight;
+
+            Vector3 screenPos = Input.mousePosition;
+            DisplayClickEffect(screenPos);
         }
 
         if (isPointerOverButton)
@@ -237,4 +267,17 @@ public class ButtonManager : MonoBehaviour
         Debug.Log($"[Move] Set Destination: {destination}");
         m_Destination = destination;
     }
+
+    private IEnumerator DestroyParticleSystemAfterEffect(ParticleSystem particleSystem)
+    {
+        // Wait for the particle system to finish playing
+        while (particleSystem.isPlaying)
+        {
+            yield return null;
+        }
+
+        // Once done, destroy the particle system
+        Destroy(particleSystem.gameObject);
+    }
+
 }
