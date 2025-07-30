@@ -2015,12 +2015,14 @@ MonoBehaviour:
   m_Animator: {fileID: 2036461744}
   m_BattleButton: {fileID: 1210205559}
   m_ButtonPressed: {fileID: 423384588}
-  m_Duration: 1.5
+  m_Duration: 1
   m_ButtonMaterial: {fileID: 2100000, guid: f9bfb2079651420409984723f8da5606, type: 2}
   m_RaiseSpeed: 0.5
   m_LowerSpeed: 1
   m_WaveTopHeight: 0.925
-  m_WaveBottomHeight: 0.15
+  m_WaveBottomHeight: 0.125
+  m_PointToClickPrefab: {fileID: 5390309620806291391, guid: d617c3a9e31174a458567ee097341965, type: 3}
+  m_ClickParticleSystemPrefab: {fileID: 7624327581556615192, guid: 7168636135735634f8ff91c6447df3f9, type: 3}
 --- !u!4 &1851899540
 Transform:
   m_ObjectHideFlags: 0
@@ -2305,7 +2307,9 @@ PrefabInstance:
       propertyPath: m_LocalRotation.z
       value: -0.0000016167758
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 836401909815359010, guid: edda891e63e31ba4c9e08149472f61b5, type: 3}
+    - {fileID: 7216987201369933385, guid: edda891e63e31ba4c9e08149472f61b5, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []

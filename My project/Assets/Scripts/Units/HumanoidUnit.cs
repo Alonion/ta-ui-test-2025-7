@@ -1,8 +1,0 @@
-
-
-
-
-public class HumanoidUnit : Unit
-{
-
-}

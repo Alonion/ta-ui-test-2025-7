@@ -49,7 +49,7 @@ Material:
     - _UIMaskSoftnessX: 1
     - _UIMaskSoftnessY: 1
     - _Wave_Amplitude: 10
-    - _Wave_Height: 0.925
+    - _Wave_Height: 0.125
     - _Wave_Opacity: 1
     - _Wave_Speed: 0.52
     m_Colors:
